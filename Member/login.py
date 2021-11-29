@@ -34,4 +34,4 @@ class Login(Resource):
 
         db = setDB()
                     
-        return {'login': False}
+        return {'login': True}
