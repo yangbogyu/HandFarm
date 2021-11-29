@@ -3,6 +3,7 @@ from flask_restx import Api, Resource
 from flask_cors import CORS, cross_origin
 
 from Member.login import login
+from Market.marketList import MarketList
 
 app = Flask(__name__)  # Flask 앱 생성
 CORS(app)
@@ -16,6 +17,7 @@ api = Api(  # API 서버로 사용할 수 있게해줌.
     license="신구대학교 IT소프트웨어과 HandFarm API")
 
 api.add_namespace(login, '/logins')
+api.add_namespace(MarketList, '/market')
 
 
 if __name__ == '__main__':

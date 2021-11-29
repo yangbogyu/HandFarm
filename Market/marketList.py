@@ -3,8 +3,6 @@ import os
 import pymysql
 import json
 import datetime
-import bcrypt
-import jwt
 from flask import request
 from flask_restx import Resource, Api, Namespace
 from dotenv import load_dotenv
@@ -21,31 +19,23 @@ def setDB(): # db연동
                     cursorclass=pymysql.cursors.DictCursor)
     return db
 
-login = Namespace(
-    name='login',
-    description='login API'
+MarketList = Namespace(
+    name='MarketList',
+    description='MarketList API'
 )
 
 
-@login.route('')
-class Login(Resource):
-    def put(self):
-        '''로그인 인증'''
-
+@MarketList.route('')
+class Search(Resource):
+    def get(self):
+        '''마켓 메인'''
         db = setDB()
-        data = request.get_json()
-        me_id = data['me_id']
-        me_pw = data['me_pw']
 
         base = db.cursor()
-        sql = f'select me_name, me_id\
-                from member\
-                where me_id = "{me_id}"\
-                and me_pw = "{me_pw}"'
-        base.execute(sql)
-        member = base.fetchall()
+        sql = f'select * from product'
 
-        if member:
-            return {'login': member}
-        else:
-            return {'login': False}
+        base.execute(sql)
+        market = base.fetchall()
+
+        return { 'market' : market}
+
