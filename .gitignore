@@ -1,3 +1,7 @@
 # 제외 파일들
 .env
 *.pyc
+*.log
+*.sock
+# 제외 폴더
+__pycache__/

@@ -19,6 +19,5 @@ api = Api(  # API 서버로 사용할 수 있게해줌.
 api.add_namespace(login, '/logins')
 api.add_namespace(MarketList, '/market')
 
-
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0')

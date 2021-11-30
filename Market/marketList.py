@@ -37,5 +37,8 @@ class Search(Resource):
         base.execute(sql)
         market = base.fetchall()
 
+        for i in market: # 날짜 데이터 문자열 변환
+            i['product_redate'] = str(i['product_redate'])
+
         return { 'market' : market}
 
