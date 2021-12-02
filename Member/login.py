@@ -36,16 +36,18 @@ class Login(Resource):
         data = request.get_json()
         me_id = data['me_id']
         me_pw = data['me_pw']
-
         base = db.cursor()
-        sql = f'select me_name, me_id\
-                from member\
+        sql = f'select * from member\
                 where me_id = "{me_id}"\
                 and me_pw = "{me_pw}"'
         base.execute(sql)
         member = base.fetchall()
 
+        for i in member:
+            i['me_joindate'] = str(i['me_joindate'])
+
         if member:
-            return {'login': member}
+            return {'login': True,
+                'data' : member[0]}
         else:
             return {'login': False}

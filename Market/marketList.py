@@ -3,7 +3,7 @@ import os
 import pymysql
 import json
 import datetime
-from flask import request
+from flask import request, make_response
 from flask_restx import Resource, Api, Namespace
 from dotenv import load_dotenv
 
@@ -24,7 +24,6 @@ MarketList = Namespace(
     description='MarketList API'
 )
 
-
 @MarketList.route('')
 class Search(Resource):
     def get(self):
@@ -32,13 +31,20 @@ class Search(Resource):
         db = setDB()
 
         base = db.cursor()
-        sql = f'select * from product'
+        sql = f'select p.product_code, p.product_name, p.product_price\
+            , p.product_amount, p.product_sell, p.product_explanation\
+            , product_redate, m.me_name from product as p\
+            inner join member as m\
+            group by p.product_code;'
 
         base.execute(sql)
         market = base.fetchall()
 
         for i in market: # 날짜 데이터 문자열 변환
             i['product_redate'] = str(i['product_redate'])
-
-        return { 'market' : market}
+        
+        #utf-8 설정
+        market = json.dumps({ 'market' : market}, ensure_ascii=False, indent=4)
+        res = make_response(market)
+        return res
 
